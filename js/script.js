@@ -2,10 +2,10 @@ $(function () {
     const panelNumber = 10;
     let nextPanelNum = 1;
     let currentTime = 0;
-    let panelNumArr = [];
-    let startWatch;
+    const panelNumArr = [];
+    let startWatch = '';
     let isRunning = false;
-
+    //ゲームをスタートする関数
     function gameStart() {
         for (let i = 1; i <= panelNumber; i++) {
             panelNumArr.push(i);
@@ -18,11 +18,11 @@ $(function () {
             panelNumArr[i] = panelNumArr[r];
             panelNumArr[r] = tmp;
         }
-
+        //panelNumberで指定した数だけカードを表示させる処理
         for (let j = 0; j < panelNumber; j++) {
             $(".panelarea").append(`<div class="btn" data-panelNum="${panelNumArr[j]}">${panelNumArr[j]}</div>`);
         }
-        
+        //生成させた数字のパネルにクリックイベントを付与し、正しい順番でクリックされた時は黒くする(inactiveというクラスをつける)
         $(document).on("click", ".btn", function () {
             let val = $(this).attr("data-panelNum");
             if (val != nextPanelNum) {
@@ -37,17 +37,19 @@ $(function () {
                 }
             }
         });
-
+        //クリックされるたび、１を足して次に押されるべき数字を返す
         function calculateNextPanelNum(nextPanelNum) {
             nextPanelNum = nextPanelNum + 1;
             return nextPanelNum;
         }
-
+        //（すべて終わった時に呼び出し、スコアを表示させる）
         function checkScore() {
             clearInterval(startWatch);
             alert(`おめでとう！スコア ${currentTime}`)
         }
     }
+    
+    //スタートボタンを押したときの処理。タイマーをスタートさせ、isRunningをtrueにする
     $("#startBtn").on('click', function () {
         if(isRunning == false) {
             isRunning = true;
